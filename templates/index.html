@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Urban Water Loss Detection</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+</head>
+<body>
+  <div class="grain"></div>
+  <header class="hero">
+    <div class="hero__content">
+      <p class="hero__eyebrow">Urban Sustainability Intelligence</p>
+      <h1>Urban Water Loss Detection System</h1>
+      <p class="hero__subtitle">
+        Upload zone-wise supply and billing data to uncover leaks, abnormal consumption, and high-loss zones in minutes.
+      </p>
+    </div>
+    <div class="hero__shape hero__shape--one"></div>
+    <div class="hero__shape hero__shape--two"></div>
+  </header>
+
+  <main class="container">
+    <section class="panel upload-panel reveal">
+      <h2>1. Upload Dataset</h2>
+      <p class="hint">
+        Supported schemas: (zone, water supplied, water billed) or (zone, leakage_flag). Optional: pressure, flow rate, date.
+      </p>
+
+      <form id="uploadForm" class="upload-form">
+        <div class="form-row">
+          <label for="csvFile">CSV File</label>
+          <input id="csvFile" name="file" type="file" accept=".csv" required />
+        </div>
+
+        <div class="form-row">
+          <label for="threshold">Leak Threshold</label>
+          <input id="threshold" name="threshold" type="number" min="0" step="0.01" value="50" />
+          <small>Leak alert when zone loss exceeds this value.</small>
+        </div>
+
+        <button type="submit" id="analyzeBtn">Analyze Water Loss</button>
+        <button type="button" id="sampleBtn" class="secondary-btn">Run Sample Dataset</button>
+      </form>
+      <p id="statusMessage" class="status"></p>
+      <p id="modeInfo" class="status mode-info"></p>
+    </section>
+
+    <section class="metrics-grid reveal" id="metricsGrid"></section>
+
+    <section class="panel reveal">
+      <h2>2. Leakage Alerts</h2>
+      <ul id="alertsList" class="alerts-list"></ul>
+    </section>
+
+    <section class="panel reveal">
+      <h2>3. Zone Loss Summary</h2>
+      <div class="table-wrap">
+        <table class="zones-table" id="zonesTable">
+          <thead>
+            <tr>
+              <th>Zone</th>
+              <th>Supplied</th>
+              <th>Billed</th>
+              <th>Loss</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="zonesTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="charts-grid">
+      <article class="panel reveal">
+        <h3>Water Supplied vs Billed by Zone</h3>
+        <canvas id="supplyVsBilledChart"></canvas>
+      </article>
+
+      <article class="panel reveal">
+        <h3>Water Loss per Zone</h3>
+        <canvas id="lossPerZoneChart"></canvas>
+      </article>
+
+      <article class="panel reveal">
+        <h3>Water Distribution by Zone</h3>
+        <canvas id="distributionPieChart"></canvas>
+      </article>
+
+      <article class="panel reveal">
+        <h3>Time-Based Trends</h3>
+        <canvas id="trendsLineChart"></canvas>
+      </article>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Urban Water Loss Detection | Flask + Pandas + Chart.js</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

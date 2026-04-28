@@ -1,0 +1,20 @@
+[Unit]
+Description=Urban Water Loss Detection (Gunicorn)
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/urban_water_ditection
+EnvironmentFile=/opt/urban_water_ditection/deploy/.env
+ExecStart=/opt/urban_water_ditection/.venv/bin/gunicorn \
+    --bind ${GUNICORN_BIND} \
+    --workers ${GUNICORN_WORKERS} \
+    --threads ${GUNICORN_THREADS} \
+    ${APP_MODULE}
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
